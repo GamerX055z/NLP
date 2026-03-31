@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Workspace | TalentLens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='ui.js') }}"></script>
+</head>
+<body class="dashboard-shell recruiter-shell">
+    <header class="dashboard-topbar">
+        <div class="shell-inner dashboard-topbar-inner">
+            <div class="brand-lockup">
+                <span class="brand-dot"></span>
+                <strong>TalentLens</strong>
+            </div>
+            <div class="topbar-meta">
+                <span class="role-chip recruiter-chip">Recruiter</span>
+                <span>{{ user.name }}</span>
+                <button type="button" class="ghost-button theme-toggle" data-theme-toggle>Dark Mode</button>
+                <form method="post" action="{{ url_for('logout') }}">
+                    <button class="ghost-button" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="shell-inner dashboard-grid">
+        <aside class="dashboard-sidebar">
+            <section class="surface-card">
+                <p class="card-tag">Hiring Desk</p>
+                <h2>{{ user.name }}</h2>
+                <p>{{ user.email or 'Recruiter analysis workspace' }}</p>
+            </section>
+
+            <section class="surface-card">
+                <h3>Platform Modules</h3>
+                {% for item in project_summary %}
+                    <article class="mini-detail">
+                        <strong>{{ item.title }}</strong>
+                        <p>{{ item.detail }}</p>
+                    </article>
+                {% endfor %}
+            </section>
+
+            <section class="surface-card">
+                <h3>Recent Ranking Runs</h3>
+                {% if recent_analyses %}
+                    {% for item in recent_analyses %}
+                        <article class="mini-detail interactive-card" data-history-card>
+                            <strong>{{ item.title }}</strong>
+                            <p>{{ item.created_at }}</p>
+                            <p>{{ item.result.total_candidates }} candidates | Top saved results ready</p>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-state">Your saved recruiter ranking runs will appear here.</p>
+                {% endif %}
+            </section>
+        </aside>
+
+        <section class="dashboard-main">
+            <section class="surface-card header-band recruiter-band">
+                <p class="section-tag">Recruiter Analysis</p>
+                <h1>Rank multiple resumes against the role you want to fill.</h1>
+                <p class="lead-text">Add candidate cards one by one, paste each resume separately, and generate a cleaner ranking board.</p>
+                <div class="showcase-band dashboard-band">
+                    <article class="showcase-stat">
+                        <span>Candidate Cards</span>
+                        <strong>{{ candidate_entries|length }}</strong>
+                    </article>
+                    <article class="showcase-stat">
+                        <span>Ranked Results</span>
+                        <strong>{{ ranking|length if ranking else 0 }}</strong>
+                    </article>
+                    <article class="showcase-stat">
+                        <span>Comparison</span>
+                        <strong>Up to 3 side by side</strong>
+                    </article>
+                </div>
+            </section>
+
+            <form class="surface-card" method="post" action="{{ url_for('recruiter_analyze') }}" enctype="multipart/form-data">
+                <div class="section-head">
+                    <div>
+                        <h2>Shortlist Workspace</h2>
+                        <p>Compare several candidates against one job requirement with structured text and file upload entry.</p>
+                    </div>
+                    <button type="submit">Rank Candidates</button>
+                </div>
+                {% if parse_notes %}
+                    <div class="notice-stack">
+                        {% for note in parse_notes %}
+                            <p class="notice-banner">{{ note }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <label for="job_description">Job description</label>
+                <textarea id="job_description" name="job_description" placeholder="Describe the target role here.">{{ default_job_description }}</textarea>
+
+                <div class="candidate-section-head">
+                    <div>
+                        <h3>Candidate Resumes</h3>
+                        <p class="muted-line">Each card below represents one candidate profile.</p>
+                    </div>
+                    <button type="button" class="ghost-button" id="add-candidate">Add Candidate</button>
+                </div>
+
+                <div id="candidate-list" class="candidate-list">
+                    {% for entry in candidate_entries %}
+                        <article class="candidate-entry">
+                            <div class="candidate-entry-head">
+                                <strong>Candidate {{ loop.index }}</strong>
+                                <button type="button" class="ghost-button remove-candidate">Remove</button>
+                            </div>
+                            <label>Candidate name</label>
+                            <input type="text" name="candidate_name" value="{{ entry.name }}" placeholder="Candidate name">
+                            <div class="input-mode-switch" data-mode-switch>
+                                <button type="button" class="mode-pill is-active" data-mode-target="upload">Upload Resume</button>
+                                <button type="button" class="mode-pill" data-mode-target="paste">Paste Text</button>
+                            </div>
+                            <div class="mode-panel is-visible" data-mode-panel="upload">
+                                <label>Resume file</label>
+                                <label class="upload-zone compact-upload" data-dropzone>
+                                    <input type="file" name="candidate_file" accept=".pdf,.docx,.txt">
+                                    <span class="upload-zone-title">Attach resume file</span>
+                                    <span class="upload-zone-copy" data-file-label>Drop file here or click to browse</span>
+                                </label>
+                            </div>
+                            <div class="mode-panel" data-mode-panel="paste">
+                                <label>Resume text</label>
+                                <textarea name="candidate_resume" placeholder="Paste the resume for this candidate.">{{ entry.resume_text }}</textarea>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            </form>
+
+            <section class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>Ranking Board</h2>
+                        <p>Candidate ranking with job-match and role-fit context.</p>
+                    </div>
+                </div>
+
+                {% if ranking %}
+                    <div class="ranking-board">
+                        {% for item in ranking %}
+                            <article
+                                class="result-card recruiter-result"
+                                data-compare-card
+                                data-name="{{ item.name }}"
+                                data-role="{{ item.predicted_role }}"
+                                data-strength="{{ item.strength }}"
+                                data-score="{{ item.score }}"
+                                data-job-match="{{ item.job_match }}"
+                                data-coverage="{{ item.keyword_coverage }}"
+                                data-matched="{{ item.matched_job_terms|join(', ') if item.matched_job_terms else 'General semantic overlap only' }}"
+                                data-missing="{{ item.missing_job_terms|join(', ') if item.missing_job_terms else 'No major missing signals' }}"
+                                data-highlights="{{ item.highlights|join(', ') }}"
+                            >
+                                <div class="result-row">
+                                    <div>
+                                        <strong>{{ loop.index }}. {{ item.name }}</strong>
+                                        <p>{{ item.predicted_role }} | {{ item.strength }}</p>
+                                    </div>
+                                    <div class="compare-actions">
+                                        <span class="role-chip recruiter-chip">{{ item.score }}%</span>
+                                        <button type="button" class="ghost-button compare-toggle" data-compare-toggle>Compare</button>
+                                    </div>
+                                </div>
+                                <p>Job match: {{ item.job_match }}% | Keyword coverage: {{ item.keyword_coverage }}%</p>
+                                <p>Matched job terms: {{ item.matched_job_terms|join(', ') if item.matched_job_terms else 'General semantic overlap only' }}</p>
+                                {% if item.missing_job_terms %}
+                                    <p class="muted-line">Missing job signals: {{ item.missing_job_terms|join(', ') }}</p>
+                                {% endif %}
+                                <p class="muted-line">Top evidence: {{ item.highlights|join(', ') }}</p>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-state">Add candidate cards and run the recruiter analysis to populate the ranking board.</p>
+                {% endif %}
+            </section>
+
+            <section class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>Candidate Compare View</h2>
+                        <p>Select up to three ranked candidates to inspect side by side.</p>
+                    </div>
+                </div>
+                <div class="compare-empty" data-compare-empty>
+                    Choose candidates from the ranking board to build a side-by-side comparison.
+                </div>
+                <div class="compare-grid" data-compare-grid></div>
+            </section>
+        </section>
+    </main>
+
+    <template id="candidate-template">
+        <article class="candidate-entry">
+            <div class="candidate-entry-head">
+                <strong>Candidate</strong>
+                <button type="button" class="ghost-button remove-candidate">Remove</button>
+            </div>
+            <label>Candidate name</label>
+            <input type="text" name="candidate_name" placeholder="Candidate name">
+            <div class="input-mode-switch" data-mode-switch>
+                <button type="button" class="mode-pill is-active" data-mode-target="upload">Upload Resume</button>
+                <button type="button" class="mode-pill" data-mode-target="paste">Paste Text</button>
+            </div>
+            <div class="mode-panel is-visible" data-mode-panel="upload">
+                <label>Resume file</label>
+                <label class="upload-zone compact-upload" data-dropzone>
+                    <input type="file" name="candidate_file" accept=".pdf,.docx,.txt">
+                    <span class="upload-zone-title">Attach resume file</span>
+                    <span class="upload-zone-copy" data-file-label>Drop file here or click to browse</span>
+                </label>
+            </div>
+            <div class="mode-panel" data-mode-panel="paste">
+                <label>Resume text</label>
+                <textarea name="candidate_resume" placeholder="Paste the resume for this candidate."></textarea>
+            </div>
+        </article>
+    </template>
+
+    <script>
+        const candidateList = document.getElementById("candidate-list");
+        const template = document.getElementById("candidate-template");
+        const addButton = document.getElementById("add-candidate");
+
+        function refreshCandidateLabels() {
+            const entries = candidateList.querySelectorAll(".candidate-entry");
+            entries.forEach((entry, index) => {
+                const heading = entry.querySelector(".candidate-entry-head strong");
+                if (heading) {
+                    heading.textContent = `Candidate ${index + 1}`;
+                }
+            });
+        }
+
+        function wireRemoveButtons(scope) {
+            scope.querySelectorAll(".remove-candidate").forEach((button) => {
+                button.onclick = () => {
+                    const entries = candidateList.querySelectorAll(".candidate-entry");
+                    if (entries.length > 1) {
+                        button.closest(".candidate-entry").remove();
+                        refreshCandidateLabels();
+                    }
+                };
+            });
+        }
+
+        addButton.addEventListener("click", () => {
+            const clone = template.content.cloneNode(true);
+            candidateList.appendChild(clone);
+            wireRemoveButtons(candidateList);
+            refreshCandidateLabels();
+            if (window.TalentLensUI) {
+                window.TalentLensUI.init(candidateList.lastElementChild);
+            }
+        });
+
+        wireRemoveButtons(document);
+        refreshCandidateLabels();
+    </script>
+</body>
+</html>

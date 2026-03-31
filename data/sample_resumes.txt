@@ -1,0 +1,17 @@
+Resume: Ananya Iyer
+Skills: Python, NLP, spaCy, transformers, TF-IDF, cosine similarity, Flask.
+Projects: Built an intelligent resume screening and job recommendation system for an NLP course project. Developed text preprocessing, keyword extraction, and role classification modules.
+Experience: Internship focused on document classification, chatbot prototyping, and information extraction from resumes.
+Education: Master's student in integrated data science and software engineering.
+---
+Resume: Vishnu Raj
+Skills: SQL, Excel, Tableau, Power BI, dashboard reporting, KPI tracking.
+Projects: Created sales and operations dashboards, automated reporting pipelines, and trend-analysis reports for business teams.
+Experience: Analyst intern handling data cleaning, stakeholder reporting, and descriptive analytics.
+Education: Bachelor's in information systems.
+---
+Resume: Meera Joseph
+Skills: Python, scikit-learn, PyTorch, feature engineering, deployment, recommendation systems.
+Projects: Built predictive models for churn detection and candidate scoring using classification pipelines and model evaluation.
+Experience: Machine learning intern working on training pipelines, experiments, and deployment automation.
+Education: Computer science graduate with machine learning specialization.

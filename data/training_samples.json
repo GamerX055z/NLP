@@ -1,0 +1,82 @@
+[
+  {
+    "role": "NLP Engineer",
+    "text": "Built resume screening and job recommendation models with TF-IDF, cosine similarity, spaCy preprocessing, and text classification in Python."
+  },
+  {
+    "role": "NLP Engineer",
+    "text": "Worked on transformer-based sentiment analysis, named entity recognition, tokenization, and chatbot pipelines using BERT and Flask."
+  },
+  {
+    "role": "NLP Engineer",
+    "text": "Created document summarization and information extraction workflows for unstructured text using Python, NLP, and search ranking."
+  },
+  {
+    "role": "NLP Engineer",
+    "text": "Developed language intelligence products with text preprocessing, feature extraction, semantic search, and classifier evaluation."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "text": "Designed model training pipelines, feature engineering workflows, and deployment services for predictive machine learning systems."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "text": "Implemented classification and recommendation models with scikit-learn, PyTorch, experiment tracking, and MLOps deployment practices."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "text": "Built scalable ML services for forecasting, feature stores, automated evaluation, and production inference in Python."
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "text": "Worked on model optimization, hyperparameter tuning, data pipelines, and cloud deployment for intelligent systems."
+  },
+  {
+    "role": "Data Scientist",
+    "text": "Used SQL, Python, pandas, regression, classification, and A/B testing to solve business problems and present insights."
+  },
+  {
+    "role": "Data Scientist",
+    "text": "Performed statistical analysis, predictive modeling, dashboard storytelling, and experimentation for product analytics."
+  },
+  {
+    "role": "Data Scientist",
+    "text": "Built churn prediction and customer segmentation models with feature analysis, visualization, and recommendation insights."
+  },
+  {
+    "role": "Data Scientist",
+    "text": "Combined data mining, statistical modeling, and communication to guide decision-making across marketing and operations."
+  },
+  {
+    "role": "Data Analyst",
+    "text": "Prepared KPI dashboards, SQL reports, Excel analyses, and weekly stakeholder summaries for business monitoring."
+  },
+  {
+    "role": "Data Analyst",
+    "text": "Worked on data cleaning, Tableau, Power BI, report automation, and trend analysis for operational teams."
+  },
+  {
+    "role": "Data Analyst",
+    "text": "Analyzed business performance metrics with SQL queries, dashboards, and presentation-ready summaries."
+  },
+  {
+    "role": "Data Analyst",
+    "text": "Created reports and visual analytics workflows using spreadsheet models, dashboard tools, and descriptive statistics."
+  },
+  {
+    "role": "Python Backend Developer",
+    "text": "Built Flask APIs, database integrations, authentication modules, and deployment-ready backend services in Python."
+  },
+  {
+    "role": "Python Backend Developer",
+    "text": "Developed REST endpoints, backend business logic, and service integrations using Python frameworks and SQL databases."
+  },
+  {
+    "role": "Python Backend Developer",
+    "text": "Worked on server-side application development, microservices, API design, and production deployment workflows."
+  },
+  {
+    "role": "Python Backend Developer",
+    "text": "Implemented backend systems with Flask, Django, database models, logging, and cloud-hosted application services."
+  }
+]

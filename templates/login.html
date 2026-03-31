@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ role_title }} {{ mode|title }} | TalentLens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+</head>
+<body class="app-shell">
+    <main class="auth-layout shell-inner">
+        <section class="auth-intro">
+            <p class="section-tag">{{ role_title }} Access</p>
+            <h1>{{ role_title }} {{ 'login' if mode == 'login' else 'registration' }} for the TalentLens workspace.</h1>
+            <p class="lead-text">
+                This workspace now uses real accounts with SQLite-backed persistence, so your role-specific dashboard
+                and analysis history remain available across sessions.
+            </p>
+            <div class="auth-links">
+                <a class="text-link" href="{{ url_for('home') }}">Back to home</a>
+                {% if mode == 'login' %}
+                    <a class="text-link" href="{{ url_for('register', user_role=user_role) }}">Create {{ role_title }} account</a>
+                {% else %}
+                    <a class="text-link" href="{{ url_for('login', user_role=user_role) }}">Already have an account?</a>
+                {% endif %}
+                <button type="button" class="ghost-button theme-toggle" data-theme-toggle>Dark Mode</button>
+            </div>
+        </section>
+
+        <section class="auth-card">
+            <h2>{{ 'Sign in as' if mode == 'login' else 'Create' }} {{ role_title }}</h2>
+            {% if error %}
+                <p class="error-banner">{{ error }}</p>
+            {% endif %}
+            <form method="post">
+                {% if mode == 'register' %}
+                    <label for="name">Display name</label>
+                    <input id="name" name="name" type="text" placeholder="Enter your name" required>
+                {% endif %}
+
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="name@example.com" required>
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="At least 6 characters" required>
+
+                <button type="submit">{{ 'Continue' if mode == 'login' else 'Create Account' }}</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

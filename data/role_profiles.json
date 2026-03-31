@@ -1,0 +1,27 @@
+[
+  {
+    "role": "NLP Engineer",
+    "description": "Builds language-processing systems for text classification, information extraction, search, chatbots, summarization, and document intelligence using Python.",
+    "keywords": ["python", "nlp", "text classification", "transformers", "bert", "spacy", "tokenization", "named entity recognition", "summarization", "cosine similarity"]
+  },
+  {
+    "role": "Machine Learning Engineer",
+    "description": "Designs end-to-end machine learning pipelines, feature engineering workflows, model training, evaluation, and deployment systems.",
+    "keywords": ["python", "machine learning", "scikit learn", "tensorflow", "pytorch", "feature engineering", "model deployment", "mlops", "classification", "prediction"]
+  },
+  {
+    "role": "Data Scientist",
+    "description": "Uses statistical modeling, experimentation, predictive analytics, and storytelling to convert data into product or business decisions.",
+    "keywords": ["python", "statistics", "sql", "data analysis", "visualization", "pandas", "regression", "classification", "experimentation", "insights"]
+  },
+  {
+    "role": "Data Analyst",
+    "description": "Analyzes structured data, prepares dashboards and reports, cleans data, and communicates actionable trends to stakeholders.",
+    "keywords": ["sql", "excel", "power bi", "tableau", "reporting", "data cleaning", "analytics", "dashboard", "kpi", "business analysis"]
+  },
+  {
+    "role": "Python Backend Developer",
+    "description": "Builds APIs, backend services, integrations, and scalable application logic with Python frameworks and databases.",
+    "keywords": ["python", "flask", "django", "api", "backend", "database", "rest", "deployment", "microservices", "authentication"]
+  }
+]

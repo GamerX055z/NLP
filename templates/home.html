@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentLens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="app-shell">
+    <header class="marketing-topbar">
+        <div class="shell-inner">
+            <div class="brand-lockup">
+                <span class="brand-dot"></span>
+                <strong>TalentLens</strong>
+            </div>
+            <nav class="marketing-nav">
+                <a href="#platform">Platform</a>
+                <a href="#flows">Flows</a>
+                <a href="#roles">Access</a>
+                {% if user %}
+                    <a href="{{ url_for('jobseeker_dashboard' if user.role == 'jobseeker' else 'recruiter_dashboard') }}">Dashboard</a>
+                {% endif %}
+                <button type="button" class="ghost-button theme-toggle" data-theme-toggle>Dark Mode</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="shell-inner landing">
+        <section class="landing-hero">
+            <div class="hero-copy-block">
+                <p class="section-tag">Natural Language Processing Project</p>
+                <h1>A job platform with separate spaces for job seekers and recruiters.</h1>
+                <p class="lead-text">
+                    TalentLens turns your NLP project into a product experience. Job seekers receive role-fit
+                    feedback from their resume, while recruiters get a ranking board for candidate shortlists.
+                </p>
+                <div class="hero-actions">
+                    <a class="primary-link" href="{{ url_for('login', user_role='jobseeker') }}">Job Seeker Login</a>
+                    <a class="secondary-link" href="{{ url_for('login', user_role='recruiter') }}">Recruiter Login</a>
+                    <a class="secondary-link" href="{{ url_for('register', user_role='jobseeker') }}">Create Account</a>
+                </div>
+                <div class="showcase-band">
+                    <article class="showcase-stat">
+                        <span>Dual Portal</span>
+                        <strong>2-role experience</strong>
+                    </article>
+                    <article class="showcase-stat">
+                        <span>Resume Intake</span>
+                        <strong>Upload or paste</strong>
+                    </article>
+                    <article class="showcase-stat">
+                        <span>Recruiter Tools</span>
+                        <strong>Rank and compare</strong>
+                    </article>
+                </div>
+            </div>
+
+            <aside class="platform-preview">
+                <div class="preview-window">
+                    <div class="preview-header">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="preview-grid">
+                        <article>
+                            <strong>Candidate Fit</strong>
+                            <p>Role prediction, confidence, skill gaps, and keyword evidence.</p>
+                        </article>
+                        <article>
+                            <strong>Hiring Board</strong>
+                            <p>Rank resumes against a role description for recruiter shortlisting.</p>
+                        </article>
+                        <article>
+                            <strong>Shared NLP Core</strong>
+                            <p>TF-IDF, logistic regression, similarity scoring, and resume completeness.</p>
+                        </article>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="role-split" id="roles">
+            <article class="access-card">
+                <p class="card-tag">Candidate Side</p>
+                <h2>Job Seeker Workspace</h2>
+                <p>Upload or paste your resume, view recommended roles, and understand how to strengthen your profile.</p>
+                <ul class="feature-list">
+                    <li>Predicted role and confidence</li>
+                    <li>Resume completeness indicators</li>
+                    <li>Matched and missing keywords</li>
+                </ul>
+                <div class="action-row">
+                    <a class="primary-link" href="{{ url_for('login', user_role='jobseeker') }}">Job Seeker Login</a>
+                    <a class="secondary-link" href="{{ url_for('register', user_role='jobseeker') }}">Register</a>
+                </div>
+            </article>
+
+            <article class="access-card recruiter-card">
+                <p class="card-tag">Hiring Side</p>
+                <h2>Recruiter Workspace</h2>
+                <p>Paste a job description and compare a shortlist of resumes inside a ranking-focused dashboard.</p>
+                <ul class="feature-list">
+                    <li>Ranked candidate shortlist</li>
+                    <li>Job-match percentages</li>
+                    <li>Role fit summary per resume</li>
+                </ul>
+                <div class="action-row">
+                    <a class="primary-link" href="{{ url_for('login', user_role='recruiter') }}">Recruiter Login</a>
+                    <a class="secondary-link" href="{{ url_for('register', user_role='recruiter') }}">Register</a>
+                </div>
+            </article>
+        </section>
+
+        <section class="flow-section" id="flows">
+            <article class="flow-intro">
+                <p class="section-tag">User Flows</p>
+                <h2>Two guided journeys built around the same NLP engine.</h2>
+                <p class="lead-text">
+                    TalentLens is structured as a dual-portal platform. Each side has its own workspace,
+                    but both rely on the same explainable resume-analysis pipeline.
+                </p>
+            </article>
+
+            <div class="flow-grid">
+                <article class="flow-card">
+                    <p class="card-tag">Job Seeker Flow</p>
+                    <h3>Upload or paste, analyze, improve.</h3>
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <span>01</span>
+                            <p>Choose your input mode and submit resume content.</p>
+                        </div>
+                        <div class="flow-step">
+                            <span>02</span>
+                            <p>Get role prediction, confidence, completeness, and evidence.</p>
+                        </div>
+                        <div class="flow-step">
+                            <span>03</span>
+                            <p>Use missing skills and improvement tips to strengthen the profile.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="flow-card recruiter-flow">
+                    <p class="card-tag">Recruiter Flow</p>
+                    <h3>Add candidates, rank them, compare the strongest.</h3>
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <span>01</span>
+                            <p>Define the role and add candidate resumes by upload or paste.</p>
+                        </div>
+                        <div class="flow-step">
+                            <span>02</span>
+                            <p>Generate ranked results using similarity, fit, and coverage signals.</p>
+                        </div>
+                        <div class="flow-step">
+                            <span>03</span>
+                            <p>Compare top candidates side by side before final shortlisting.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="module-strip" id="platform">
+            {% for item in project_summary %}
+                <article class="module-tile">
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.detail }}</p>
+                </article>
+            {% endfor %}
+        </section>
+    </main>
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+</body>
+</html>

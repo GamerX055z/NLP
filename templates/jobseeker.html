@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Seeker Workspace | TalentLens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='ui.js') }}"></script>
+</head>
+<body class="dashboard-shell">
+    <header class="dashboard-topbar">
+        <div class="shell-inner dashboard-topbar-inner">
+            <div class="brand-lockup">
+                <span class="brand-dot"></span>
+                <strong>TalentLens</strong>
+            </div>
+            <div class="topbar-meta">
+                <span class="role-chip">Job Seeker</span>
+                <span>{{ user.name }}</span>
+                <button type="button" class="ghost-button theme-toggle" data-theme-toggle>Dark Mode</button>
+                <form method="post" action="{{ url_for('logout') }}">
+                    <button class="ghost-button" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="shell-inner dashboard-grid">
+        <aside class="dashboard-sidebar">
+            <section class="surface-card">
+                <p class="card-tag">Your Space</p>
+                <h2>{{ user.name }}</h2>
+                <p>{{ user.email or 'Resume analysis workspace' }}</p>
+            </section>
+
+            <section class="surface-card">
+                <h3>What You Get</h3>
+                {% for item in project_summary %}
+                    <article class="mini-detail">
+                        <strong>{{ item.title }}</strong>
+                        <p>{{ item.detail }}</p>
+                    </article>
+                {% endfor %}
+            </section>
+
+            <section class="surface-card">
+                <h3>Recent Analyses</h3>
+                {% if recent_analyses %}
+                    {% for item in recent_analyses %}
+                        <article class="mini-detail interactive-card" data-history-card>
+                            <strong>{{ item.title }}</strong>
+                            <p>{{ item.created_at }}</p>
+                            <p>{{ item.result.predicted_role }} | {{ item.result.confidence }}% confidence</p>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-state">Your saved job seeker analyses will appear here.</p>
+                {% endif %}
+            </section>
+        </aside>
+
+        <section class="dashboard-main">
+            <section class="surface-card header-band">
+                <p class="section-tag">Candidate Analysis</p>
+                <h1>Understand where your resume fits best.</h1>
+                <p class="lead-text">Paste your resume and get role prediction, confidence scoring, keyword evidence, and improvement signals.</p>
+                <div class="showcase-band dashboard-band">
+                    <article class="showcase-stat">
+                        <span>Input Modes</span>
+                        <strong>Upload or paste</strong>
+                    </article>
+                    <article class="showcase-stat">
+                        <span>Saved Runs</span>
+                        <strong>{{ recent_analyses|length }}</strong>
+                    </article>
+                    <article class="showcase-stat">
+                        <span>Best Signal</span>
+                        <strong>{{ resume_analysis.predicted_role if resume_analysis else 'Awaiting analysis' }}</strong>
+                    </article>
+                </div>
+            </section>
+
+            <form class="surface-card" method="post" action="{{ url_for('jobseeker_analyze') }}" enctype="multipart/form-data">
+                <div class="section-head">
+                    <div>
+                        <h2>Resume Analyzer</h2>
+                        <p>Paste your resume, upload a file, or combine both for stronger analysis.</p>
+                    </div>
+                    <button type="submit">Analyze Resume</button>
+                </div>
+                {% if parse_notes %}
+                    <div class="notice-stack">
+                        {% for note in parse_notes %}
+                            <p class="notice-banner">{{ note }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="input-mode-switch" data-mode-switch>
+                    <button type="button" class="mode-pill is-active" data-mode-target="upload">Upload Resume</button>
+                    <button type="button" class="mode-pill" data-mode-target="paste">Paste Text</button>
+                </div>
+                <div class="mode-panel is-visible" data-mode-panel="upload">
+                    <label for="resume_file">Resume file</label>
+                    <label class="upload-zone" data-dropzone>
+                        <input id="resume_file" name="resume_file" type="file" accept=".pdf,.docx,.txt">
+                        <span class="upload-zone-title">Upload your resume</span>
+                        <span class="upload-zone-copy" data-file-label>Drop a PDF, DOCX, or TXT here, or click to browse</span>
+                    </label>
+                </div>
+                <div class="mode-panel" data-mode-panel="paste">
+                    <label for="resume_text">Resume text</label>
+                    <textarea id="resume_text" name="resume_text" placeholder="Paste your skills, projects, experience, and education here.">{{ resume_text if resume_text is not none else default_resume }}</textarea>
+                </div>
+            </form>
+
+            <section class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>Fit Overview</h2>
+                        <p>Role alignment and resume quality signals.</p>
+                    </div>
+                </div>
+
+                {% if resume_analysis %}
+                    <div class="metric-grid">
+                        <article class="dashboard-metric">
+                            <span>Best Role</span>
+                            <strong>{{ resume_analysis.predicted_role }}</strong>
+                        </article>
+                        <article class="dashboard-metric">
+                            <span>Confidence</span>
+                            <strong>{{ resume_analysis.confidence }}%</strong>
+                        </article>
+                        <article class="dashboard-metric">
+                            <span>Completeness</span>
+                            <strong>{{ resume_analysis.completeness_score }}%</strong>
+                        </article>
+                        <article class="dashboard-metric">
+                            <span>Overall Fit</span>
+                            <strong>{{ resume_analysis.resume_strength }}</strong>
+                        </article>
+                        <article class="dashboard-metric">
+                            <span>Profile Similarity</span>
+                            <strong>{{ resume_analysis.profile_similarity }}%</strong>
+                        </article>
+                    </div>
+
+                    <div class="content-grid two-up">
+                        <section>
+                            <h3>Role Recommendations</h3>
+                            {% for item in recommendation %}
+                                <article class="result-card">
+                                    <div class="result-row">
+                                        <strong>{{ item.role }}</strong>
+                                        <span class="role-chip">{{ item.score }}%</span>
+                                    </div>
+                                    <p>Confidence: {{ item.confidence }}% | Similarity: {{ item.profile_similarity }}% | Coverage: {{ item.keyword_coverage }}%</p>
+                                    <p>Matched skills: {{ item.matched_keywords|join(', ') if item.matched_keywords else 'General profile alignment' }}</p>
+                                    <p class="muted-line">Missing emphasis: {{ item.missing_keywords|join(', ') if item.missing_keywords else 'No major gaps detected' }}</p>
+                                </article>
+                            {% endfor %}
+                        </section>
+
+                        <section>
+                            <h3>Resume Evidence</h3>
+                            <div class="chip-cloud">
+                                {% for keyword in keywords %}
+                                    <span class="skill-chip">{{ keyword }}</span>
+                                {% endfor %}
+                            </div>
+                            {% if resume_analysis.keyphrases %}
+                                <p class="muted-line">Key phrases: {{ resume_analysis.keyphrases|join(', ') }}</p>
+                            {% endif %}
+                            {% if resume_analysis.present_sections %}
+                                <p class="muted-line">Detected sections: {{ resume_analysis.present_sections|join(', ') }}</p>
+                            {% endif %}
+                            {% if resume_analysis.improvement_tips %}
+                                <div class="tip-stack">
+                                    {% for tip in resume_analysis.improvement_tips %}
+                                        <article class="tip-card">{{ tip }}</article>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </section>
+                    </div>
+                {% else %}
+                    <p class="empty-state">Run the analyzer to see your job seeker dashboard fill with fit insights.</p>
+                {% endif %}
+            </section>
+        </section>
+    </main>
+</body>
+</html>
