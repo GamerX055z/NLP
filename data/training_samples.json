@@ -1,82 +1,170 @@
 [
   {
-    "role": "NLP Engineer",
-    "text": "Built resume screening and job recommendation models with TF-IDF, cosine similarity, spaCy preprocessing, and text classification in Python."
+    "role": "Frontend Engineer",
+    "text": "Built React and TypeScript interfaces, reusable component libraries, and responsive dashboards with strong browser performance optimization."
   },
   {
-    "role": "NLP Engineer",
-    "text": "Worked on transformer-based sentiment analysis, named entity recognition, tokenization, and chatbot pipelines using BERT and Flask."
+    "role": "Frontend Engineer",
+    "text": "Worked on modern web UI development with Next.js, CSS systems, accessibility, design systems, and client-side application architecture."
   },
   {
-    "role": "NLP Engineer",
-    "text": "Created document summarization and information extraction workflows for unstructured text using Python, NLP, and search ranking."
+    "role": "Backend Engineer",
+    "text": "Developed REST APIs, authentication services, database integrations, and scalable backend business logic for web applications."
   },
   {
-    "role": "NLP Engineer",
-    "text": "Developed language intelligence products with text preprocessing, feature extraction, semantic search, and classifier evaluation."
+    "role": "Backend Engineer",
+    "text": "Built server-side systems using Python and Java, microservices, asynchronous jobs, API design, and data persistence."
   },
   {
-    "role": "Machine Learning Engineer",
-    "text": "Designed model training pipelines, feature engineering workflows, and deployment services for predictive machine learning systems."
+    "role": "Full Stack Developer",
+    "text": "Built end-to-end products across React frontend, backend APIs, databases, deployment workflows, and integrated web application features."
   },
   {
-    "role": "Machine Learning Engineer",
-    "text": "Implemented classification and recommendation models with scikit-learn, PyTorch, experiment tracking, and MLOps deployment practices."
+    "role": "Full Stack Developer",
+    "text": "Worked on full stack delivery with JavaScript, Python, SQL, frontend pages, backend logic, and cloud deployment."
   },
   {
-    "role": "Machine Learning Engineer",
-    "text": "Built scalable ML services for forecasting, feature stores, automated evaluation, and production inference in Python."
+    "role": "Mobile App Developer",
+    "text": "Created Flutter and React Native applications with mobile UI, push notifications, Firebase integration, and app release workflows."
   },
   {
-    "role": "Machine Learning Engineer",
-    "text": "Worked on model optimization, hyperparameter tuning, data pipelines, and cloud deployment for intelligent systems."
+    "role": "Mobile App Developer",
+    "text": "Built Android and iOS app features, native device integrations, mobile testing, and polished app user experiences."
+  },
+  {
+    "role": "DevOps Engineer",
+    "text": "Automated CI/CD pipelines with Docker, Kubernetes, Terraform, Jenkins, and infrastructure deployment workflows."
+  },
+  {
+    "role": "DevOps Engineer",
+    "text": "Managed environments, release automation, infrastructure as code, container orchestration, and build pipeline reliability."
+  },
+  {
+    "role": "Cloud Engineer",
+    "text": "Designed AWS cloud solutions with compute, storage, networking, serverless services, and secure scalable architectures."
+  },
+  {
+    "role": "Cloud Engineer",
+    "text": "Worked on Azure and GCP infrastructure, cloud deployment, IAM, VPC networking, and resilient cloud-native systems."
+  },
+  {
+    "role": "Site Reliability Engineer",
+    "text": "Improved production uptime with monitoring, observability, alerting, incident response, and reliability engineering practices."
+  },
+  {
+    "role": "Site Reliability Engineer",
+    "text": "Built SRE workflows around Prometheus, Grafana, service health, runbooks, error budgets, and on-call operations."
+  },
+  {
+    "role": "Data Engineer",
+    "text": "Built ETL pipelines, Spark jobs, Airflow orchestration, data warehouses, and large-scale analytics data infrastructure."
+  },
+  {
+    "role": "Data Engineer",
+    "text": "Designed SQL-based data pipelines, warehouse modeling, streaming ingestion, and reliable transformation workflows."
   },
   {
     "role": "Data Scientist",
-    "text": "Used SQL, Python, pandas, regression, classification, and A/B testing to solve business problems and present insights."
+    "text": "Used Python, statistics, experimentation, regression, classification, and dashboards to produce decision-ready business insights."
   },
   {
     "role": "Data Scientist",
-    "text": "Performed statistical analysis, predictive modeling, dashboard storytelling, and experimentation for product analytics."
-  },
-  {
-    "role": "Data Scientist",
-    "text": "Built churn prediction and customer segmentation models with feature analysis, visualization, and recommendation insights."
-  },
-  {
-    "role": "Data Scientist",
-    "text": "Combined data mining, statistical modeling, and communication to guide decision-making across marketing and operations."
+    "text": "Built predictive models, segmentation analyses, statistical experiments, and storytelling-driven analytics for product teams."
   },
   {
     "role": "Data Analyst",
-    "text": "Prepared KPI dashboards, SQL reports, Excel analyses, and weekly stakeholder summaries for business monitoring."
+    "text": "Prepared KPI dashboards, SQL reports, Excel analyses, and Tableau visuals for operational and business reporting."
   },
   {
     "role": "Data Analyst",
-    "text": "Worked on data cleaning, Tableau, Power BI, report automation, and trend analysis for operational teams."
+    "text": "Worked on reporting, data cleaning, dashboard creation, business trend analysis, and stakeholder-facing summaries."
   },
   {
-    "role": "Data Analyst",
-    "text": "Analyzed business performance metrics with SQL queries, dashboards, and presentation-ready summaries."
+    "role": "Machine Learning Engineer",
+    "text": "Designed machine learning pipelines, feature engineering workflows, model training, evaluation, and production deployment services."
   },
   {
-    "role": "Data Analyst",
-    "text": "Created reports and visual analytics workflows using spreadsheet models, dashboard tools, and descriptive statistics."
+    "role": "Machine Learning Engineer",
+    "text": "Implemented predictive models with scikit-learn and PyTorch, serving systems, classification pipelines, and ML experimentation."
   },
   {
-    "role": "Python Backend Developer",
-    "text": "Built Flask APIs, database integrations, authentication modules, and deployment-ready backend services in Python."
+    "role": "NLP Engineer",
+    "text": "Built resume screening, text classification, named entity recognition, summarization, and chatbot pipelines with transformers and spaCy."
   },
   {
-    "role": "Python Backend Developer",
-    "text": "Developed REST endpoints, backend business logic, and service integrations using Python frameworks and SQL databases."
+    "role": "NLP Engineer",
+    "text": "Worked on document intelligence, tokenization, semantic search, information extraction, and BERT-based NLP products."
   },
   {
-    "role": "Python Backend Developer",
-    "text": "Worked on server-side application development, microservices, API design, and production deployment workflows."
+    "role": "MLOps Engineer",
+    "text": "Operationalized ML systems with model registries, automated deployments, monitoring, feature stores, and experiment tracking."
   },
   {
-    "role": "Python Backend Developer",
-    "text": "Implemented backend systems with Flask, Django, database models, logging, and cloud-hosted application services."
+    "role": "MLOps Engineer",
+    "text": "Built MLOps pipelines with Docker, Kubernetes, Airflow, CI/CD, reproducible training, and model lifecycle automation."
+  },
+  {
+    "role": "QA Engineer",
+    "text": "Performed manual testing, regression validation, test case design, defect tracking, and software quality assurance across releases."
+  },
+  {
+    "role": "QA Engineer",
+    "text": "Worked on functional testing, release sign-off, bug reporting, user acceptance validation, and quality processes."
+  },
+  {
+    "role": "Automation Test Engineer",
+    "text": "Built Selenium and Playwright automation suites for UI testing, regression coverage, and continuous test execution."
+  },
+  {
+    "role": "Automation Test Engineer",
+    "text": "Implemented test automation frameworks, API checks, Cypress scripts, pytest suites, and repeatable QA pipelines."
+  },
+  {
+    "role": "Security Engineer",
+    "text": "Worked on application security, OWASP remediation, threat modeling, vulnerability assessment, and secure coding standards."
+  },
+  {
+    "role": "Security Engineer",
+    "text": "Designed secure systems with IAM, encryption, penetration testing support, logging, and incident prevention controls."
+  },
+  {
+    "role": "Product Manager",
+    "text": "Defined product requirements, roadmaps, stakeholder priorities, user stories, and metrics-driven delivery strategies."
+  },
+  {
+    "role": "Product Manager",
+    "text": "Worked on agile planning, feature prioritization, launch coordination, product strategy, and cross-functional execution."
+  },
+  {
+    "role": "UI/UX Designer",
+    "text": "Created user flows, wireframes, prototypes, Figma screens, usability studies, and polished interaction design systems."
+  },
+  {
+    "role": "UI/UX Designer",
+    "text": "Worked on user research, interface design, design systems, accessibility, and visual consistency across digital products."
+  },
+  {
+    "role": "Solutions Architect",
+    "text": "Designed scalable solution architectures, integration patterns, enterprise APIs, and cloud-aligned technical strategies."
+  },
+  {
+    "role": "Solutions Architect",
+    "text": "Mapped business requirements into technical solutions with platform integration, high-level architecture, and system planning."
+  },
+  {
+    "role": "Software Architect",
+    "text": "Defined software architecture, component boundaries, design patterns, scalability direction, and technical design governance."
+  },
+  {
+    "role": "Software Architect",
+    "text": "Led architecture decisions for distributed systems, microservices, performance, long-term maintainability, and platform structure."
+  },
+  {
+    "role": "Technical Support Engineer",
+    "text": "Resolved technical incidents, analyzed logs, supported customers, handled ticketing workflows, and performed root cause troubleshooting."
+  },
+  {
+    "role": "Technical Support Engineer",
+    "text": "Worked on product support, incident triage, debugging, SLA-driven issue resolution, and communication with engineering teams."
   }
 ]

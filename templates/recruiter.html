@@ -58,6 +58,24 @@
                     <p class="empty-state">Your saved recruiter ranking runs will appear here.</p>
                 {% endif %}
             </section>
+
+            <section class="surface-card">
+                <h3>Feedback Memory</h3>
+                <article class="mini-detail">
+                    <strong>Signals Learned</strong>
+                    <p>{{ feedback_profile.total_feedback if feedback_profile else 0 }} recruiter decisions saved for reranking.</p>
+                </article>
+                <article class="mini-detail">
+                    <strong>Preferred Roles</strong>
+                    <p>
+                        {% if feedback_profile and feedback_profile.shortlisted_roles %}
+                            {{ feedback_profile.shortlisted_roles.keys()|list|join(', ') }}
+                        {% else %}
+                            Shortlist candidates to start building recruiter preference memory.
+                        {% endif %}
+                    </p>
+                </article>
+            </section>
         </aside>
 
         <section class="dashboard-main">
@@ -78,7 +96,35 @@
                         <span>Comparison</span>
                         <strong>Up to 3 side by side</strong>
                     </article>
+                    <article class="showcase-stat">
+                        <span>Feedback Memory</span>
+                        <strong>{{ feedback_profile.total_feedback if feedback_profile else 0 }} signals</strong>
+                    </article>
                 </div>
+                <div class="hero-marquee dashboard-marquee recruiter-marquee">
+                    <span>Shortlist intelligence</span>
+                    <span>Semantic match scoring</span>
+                    <span>Preference-aware reranking</span>
+                    <span>Compare top candidates</span>
+                </div>
+            </section>
+
+            <section class="command-deck">
+                <article class="command-card">
+                    <span>Workspace Pulse</span>
+                    <strong>{{ ranking|length if ranking else 0 }} ranked candidates</strong>
+                    <p>Current shortlist volume generated from the active job requirement.</p>
+                </article>
+                <article class="command-card">
+                    <span>Feedback Loop</span>
+                    <strong>{{ feedback_profile.total_feedback if feedback_profile else 0 }} learned signals</strong>
+                    <p>Recruiter actions can now steer future rankings toward preferred candidate patterns.</p>
+                </article>
+                <article class="command-card">
+                    <span>Ranking Lens</span>
+                    <strong>Lexical + semantic + history</strong>
+                    <p>The system balances direct keyword fit, broader meaning, and previous recruiter decisions.</p>
+                </article>
             </section>
 
             <form class="surface-card" method="post" action="{{ url_for('recruiter_analyze') }}" enctype="multipart/form-data">
@@ -165,19 +211,43 @@
                                 <div class="result-row">
                                     <div>
                                         <strong>{{ loop.index }}. {{ item.name }}</strong>
-                                        <p>{{ item.predicted_role }} | {{ item.strength }}</p>
+                                        {% set meta = family_meta(item.predicted_family) %}
+                                        <p>{{ item.predicted_role }} | <span class="family-inline"><span class="family-dot family-{{ meta.slug }}">{{ meta.icon }}</span>{{ item.predicted_family }}</span> | {{ item.strength }}</p>
                                     </div>
                                     <div class="compare-actions">
                                         <span class="role-chip recruiter-chip">{{ item.score }}%</span>
                                         <button type="button" class="ghost-button compare-toggle" data-compare-toggle>Compare</button>
                                     </div>
                                 </div>
-                                <p>Job match: {{ item.job_match }}% | Keyword coverage: {{ item.keyword_coverage }}%</p>
+                                <p>Job match: {{ item.job_match }}% | Semantic match: {{ item.semantic_match }}% | Keyword coverage: {{ item.keyword_coverage }}%</p>
                                 <p>Matched job terms: {{ item.matched_job_terms|join(', ') if item.matched_job_terms else 'General semantic overlap only' }}</p>
                                 {% if item.missing_job_terms %}
                                     <p class="muted-line">Missing job signals: {{ item.missing_job_terms|join(', ') }}</p>
                                 {% endif %}
+                                {% if item.feedback_adjustment %}
+                                    <p class="muted-line">Feedback rerank adjustment: {{ item.feedback_adjustment }}%</p>
+                                {% endif %}
                                 <p class="muted-line">Top evidence: {{ item.highlights|join(', ') }}</p>
+                                <div class="feedback-actions">
+                                    <form method="post" action="{{ url_for('recruiter_feedback') }}">
+                                        <input type="hidden" name="decision" value="shortlist">
+                                        <input type="hidden" name="candidate_name" value="{{ item.name }}">
+                                        <input type="hidden" name="predicted_role" value="{{ item.predicted_role }}">
+                                        <input type="hidden" name="job_description" value="{{ job_description or default_job_description }}">
+                                        <input type="hidden" name="matched_job_terms" value="{{ item.matched_job_terms|join(', ') }}">
+                                        <input type="hidden" name="highlights" value="{{ item.highlights|join(', ') }}">
+                                        <button type="submit" class="ghost-button">Shortlist Signal</button>
+                                    </form>
+                                    <form method="post" action="{{ url_for('recruiter_feedback') }}">
+                                        <input type="hidden" name="decision" value="reject">
+                                        <input type="hidden" name="candidate_name" value="{{ item.name }}">
+                                        <input type="hidden" name="predicted_role" value="{{ item.predicted_role }}">
+                                        <input type="hidden" name="job_description" value="{{ job_description or default_job_description }}">
+                                        <input type="hidden" name="matched_job_terms" value="{{ item.matched_job_terms|join(', ') }}">
+                                        <input type="hidden" name="highlights" value="{{ item.highlights|join(', ') }}">
+                                        <button type="submit" class="ghost-button">Reject Signal</button>
+                                    </form>
+                                </div>
                             </article>
                         {% endfor %}
                     </div>
@@ -197,6 +267,29 @@
                     Choose candidates from the ranking board to build a side-by-side comparison.
                 </div>
                 <div class="compare-grid" data-compare-grid></div>
+            </section>
+
+            <section class="surface-card">
+                <div class="section-head">
+                    <div>
+                        <h2>Decision Notes</h2>
+                        <p>A quick guide for reading the ranking board more confidently.</p>
+                    </div>
+                </div>
+                <div class="decision-grid">
+                    <article class="decision-card">
+                        <strong>Job Match</strong>
+                        <p>Direct text-level overlap between the role description and the resume content.</p>
+                    </article>
+                    <article class="decision-card">
+                        <strong>Semantic Match</strong>
+                        <p>Broader meaning alignment, even when the resume uses different wording than the job post.</p>
+                    </article>
+                    <article class="decision-card">
+                        <strong>Feedback Adjustment</strong>
+                        <p>Extra reranking influence based on what this recruiter has previously shortlisted or rejected.</p>
+                    </article>
+                </div>
             </section>
         </section>
     </main>

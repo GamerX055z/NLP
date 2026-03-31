@@ -37,7 +37,7 @@
                 <div class="hero-actions">
                     <a class="primary-link" href="{{ url_for('login', user_role='jobseeker') }}">Job Seeker Login</a>
                     <a class="secondary-link" href="{{ url_for('login', user_role='recruiter') }}">Recruiter Login</a>
-                    <a class="secondary-link" href="{{ url_for('register', user_role='jobseeker') }}">Create Account</a>
+                    <a class="secondary-link" href="#roles">Explore Workspaces</a>
                 </div>
                 <div class="showcase-band">
                     <article class="showcase-stat">
@@ -52,6 +52,12 @@
                         <span>Recruiter Tools</span>
                         <strong>Rank and compare</strong>
                     </article>
+                </div>
+                <div class="hero-marquee">
+                    <span>Semantic resume matching</span>
+                    <span>Role family guidance</span>
+                    <span>Recruiter reranking memory</span>
+                    <span>Explainable NLP evidence</span>
                 </div>
             </div>
 
@@ -73,9 +79,31 @@
                             <strong>Shared NLP Core</strong>
                             <p>TF-IDF, logistic regression, similarity scoring, and resume completeness.</p>
                         </article>
+                        <article class="preview-spotlight">
+                            <strong>Decision Layer</strong>
+                            <p>Semantic similarity, role families, feedback-aware ranking, and visible match explanations.</p>
+                        </article>
                     </div>
                 </div>
             </aside>
+        </section>
+
+        <section class="insight-ribbon">
+            <article class="ribbon-card">
+                <span>Job Seeker Signal</span>
+                <strong>Role prediction + improvement tips</strong>
+                <p>Applicants get clarity on which software paths their resumes support best.</p>
+            </article>
+            <article class="ribbon-card">
+                <span>Recruiter Signal</span>
+                <strong>Shortlist reasoning, not just scores</strong>
+                <p>Hiring teams can see matched terms, missing signals, and semantic alignment in one place.</p>
+            </article>
+            <article class="ribbon-card">
+                <span>System Signal</span>
+                <strong>Explainable and extensible NLP</strong>
+                <p>The current stack stays practical while leaving room for stronger semantic models.</p>
+            </article>
         </section>
 
         <section class="role-split" id="roles">
@@ -168,6 +196,34 @@
                     <p>{{ item.detail }}</p>
                 </article>
             {% endfor %}
+        </section>
+
+        <section class="experience-board">
+            <article class="experience-copy">
+                <p class="section-tag">Experience Design</p>
+                <h2>Built to feel like a product walkthrough instead of a plain submission page.</h2>
+                <p class="lead-text">
+                    The platform layout is meant to carry the idea of guided decision-making:
+                    one workspace helps candidates understand fit, while the other helps recruiters narrow uncertainty.
+                </p>
+            </article>
+            <div class="experience-grid">
+                <article class="experience-card accent-blue">
+                    <span>01</span>
+                    <h3>Candidate-first feedback</h3>
+                    <p>Resume quality, family grouping, top roles, and missing signals stay visible instead of buried.</p>
+                </article>
+                <article class="experience-card accent-green">
+                    <span>02</span>
+                    <h3>Recruiter command center</h3>
+                    <p>Candidate cards, ranking board, compare view, and recruiter feedback memory all live in one workspace.</p>
+                </article>
+                <article class="experience-card accent-gold">
+                    <span>03</span>
+                    <h3>Expandable architecture</h3>
+                    <p>The interface is already structured for future semantic models, exports, analytics, and collaboration features.</p>
+                </article>
+            </div>
         </section>
     </main>
     <script src="{{ url_for('static', filename='theme.js') }}"></script>

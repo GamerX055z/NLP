@@ -71,7 +71,11 @@
                     button.classList.toggle("is-active", button.dataset.modeTarget === targetMode);
                 });
                 panels.forEach((panel) => {
-                    panel.classList.toggle("is-visible", panel.dataset.modePanel === targetMode);
+                    const active = panel.dataset.modePanel === targetMode;
+                    panel.classList.toggle("is-visible", active);
+                    panel.querySelectorAll("input, textarea, select").forEach((field) => {
+                        field.disabled = !active;
+                    });
                 });
             };
 

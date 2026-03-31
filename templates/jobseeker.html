@@ -78,6 +78,16 @@
                         <span>Best Signal</span>
                         <strong>{{ resume_analysis.predicted_role if resume_analysis else 'Awaiting analysis' }}</strong>
                     </article>
+                    <article class="showcase-stat">
+                        <span>Career Family</span>
+                        <strong>{{ resume_analysis.predicted_family if resume_analysis else 'Awaiting analysis' }}</strong>
+                    </article>
+                </div>
+                <div class="hero-marquee dashboard-marquee">
+                    <span>Role-fit scoring</span>
+                    <span>Career family mapping</span>
+                    <span>Keyword gap discovery</span>
+                    <span>Resume completeness insight</span>
                 </div>
             </section>
 
@@ -144,15 +154,42 @@
                             <span>Profile Similarity</span>
                             <strong>{{ resume_analysis.profile_similarity }}%</strong>
                         </article>
+                        <article class="dashboard-metric">
+                            <span>Career Family</span>
+                            <strong>{{ resume_analysis.predicted_family }}</strong>
+                        </article>
                     </div>
 
                     <div class="content-grid two-up">
+                        <section>
+                            <h3>Career Families</h3>
+                            <div class="family-grid">
+                                {% for item in resume_analysis.family_recommendations %}
+                                    {% set meta = family_meta(item.family) %}
+                                    <article class="family-card family-{{ meta.slug }}">
+                                        <div class="family-card-head">
+                                            <span class="family-icon">{{ meta.icon }}</span>
+                                            <strong>{{ item.family }}</strong>
+                                        </div>
+                                        <span>{{ item.score }}%</span>
+                                    </article>
+                                {% endfor %}
+                            </div>
+                        </section>
+
                         <section>
                             <h3>Role Recommendations</h3>
                             {% for item in recommendation %}
                                 <article class="result-card">
                                     <div class="result-row">
-                                        <strong>{{ item.role }}</strong>
+                                        <div>
+                                            <strong>{{ item.role }}</strong>
+                                            {% set meta = family_meta(item.family) %}
+                                            <p class="muted-line family-inline">
+                                                <span class="family-dot family-{{ meta.slug }}">{{ meta.icon }}</span>
+                                                {{ item.family }}
+                                            </p>
+                                        </div>
                                         <span class="role-chip">{{ item.score }}%</span>
                                     </div>
                                     <p>Confidence: {{ item.confidence }}% | Similarity: {{ item.profile_similarity }}% | Coverage: {{ item.keyword_coverage }}%</p>
@@ -161,7 +198,9 @@
                                 </article>
                             {% endfor %}
                         </section>
+                    </div>
 
+                    <div class="content-grid two-up">
                         <section>
                             <h3>Resume Evidence</h3>
                             <div class="chip-cloud">
@@ -180,6 +219,37 @@
                                     {% for tip in resume_analysis.improvement_tips %}
                                         <article class="tip-card">{{ tip }}</article>
                                     {% endfor %}
+                                </div>
+                            {% endif %}
+                        </section>
+
+                        <section>
+                            <h3>Improvement Roadmap</h3>
+                            <div class="roadmap-stack">
+                                <article class="roadmap-card">
+                                    <span>Target Track</span>
+                                    <strong>{{ resume_analysis.predicted_role }}</strong>
+                                    <p>Use this as the primary direction for sharpening project language and skill emphasis.</p>
+                                </article>
+                                <article class="roadmap-card">
+                                    <span>Semantic Fit</span>
+                                    <strong>{{ resume_analysis.semantic_similarity }}%</strong>
+                                    <p>Your resume shows this level of broader semantic alignment with the best-matching software role.</p>
+                                </article>
+                                <article class="roadmap-card">
+                                    <span>Section Coverage</span>
+                                    <strong>{{ resume_analysis.present_sections|length }} detected sections</strong>
+                                    <p>Well-labeled skills, projects, and experience sections help the model interpret your profile more accurately.</p>
+                                </article>
+                            </div>
+                            {% if resume_analysis.gaps %}
+                                <div class="focus-panel">
+                                    <h4>Priority Gaps To Address</h4>
+                                    <div class="chip-cloud">
+                                        {% for gap in resume_analysis.gaps %}
+                                            <span class="skill-chip">{{ gap }}</span>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             {% endif %}
                         </section>

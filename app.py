@@ -16,6 +16,16 @@ DEFAULT_JOB = (
     "Looking for an NLP engineer with Python, machine learning, transformers, "
     "spaCy, and text classification experience."
 )
+FAMILY_META = {
+    "Engineering": {"icon": "Code", "slug": "engineering"},
+    "Data & AI": {"icon": "AI", "slug": "data-ai"},
+    "Cloud & Infrastructure": {"icon": "Cloud", "slug": "cloud"},
+    "Quality & Security": {"icon": "Shield", "slug": "quality"},
+    "Product & Design": {"icon": "Design", "slug": "product"},
+    "Architecture & Strategy": {"icon": "Arc", "slug": "architecture"},
+    "Support & Operations": {"icon": "Ops", "slug": "support"},
+    "General Software": {"icon": "Tech", "slug": "general"},
+}
 
 app = Flask(__name__)
 app.secret_key = "talentlens-dev-key"
@@ -25,6 +35,14 @@ system = RecruitmentNLPSystem(
     DATA_DIR / "training_samples.json",
 )
 db = TalentLensDB(DB_DIR / "talentlens.db")
+
+
+@app.context_processor
+def inject_family_meta():
+    def family_meta(family_name: str) -> dict:
+        return FAMILY_META.get(family_name, FAMILY_META["General Software"])
+
+    return {"family_meta": family_meta}
 
 
 def current_user() -> dict | None:
@@ -276,6 +294,8 @@ def recruiter_dashboard():
     if not user:
         return redirect(url_for("login", user_role="recruiter"))
 
+    feedback_profile = db.recruiter_feedback_profile(user["id"])
+
     return render_template(
         "recruiter.html",
         user=user,
@@ -283,6 +303,7 @@ def recruiter_dashboard():
         default_job_description=DEFAULT_JOB,
         candidate_entries=sample_candidates(),
         recent_analyses=db.list_recent_analyses(user["id"], "recruiter"),
+        feedback_profile=feedback_profile,
         parse_notes=[],
     )
 
@@ -296,7 +317,12 @@ def recruiter_analyze():
     job_description = request.form.get("job_description", "").strip()
     candidate_entries, parse_notes = candidate_entries_from_form()
     resume_batch = build_resume_batch(candidate_entries)
-    ranking = system.rank_resumes(job_description, resume_batch) if job_description and resume_batch else []
+    feedback_profile = db.recruiter_feedback_profile(user["id"])
+    ranking = (
+        system.rank_resumes(job_description, resume_batch, feedback_signals=feedback_profile)
+        if job_description and resume_batch
+        else []
+    )
 
     if ranking and job_description:
         save_recruiter_history(user["id"], job_description, ranking)
@@ -310,8 +336,48 @@ def recruiter_analyze():
         project_summary=system.project_summary(),
         default_job_description=job_description or DEFAULT_JOB,
         recent_analyses=db.list_recent_analyses(user["id"], "recruiter"),
+        feedback_profile=feedback_profile,
         parse_notes=parse_notes,
     )
+
+
+@app.route("/recruiter/feedback", methods=["POST"])
+def recruiter_feedback():
+    user = require_role("recruiter")
+    if not user:
+        return redirect(url_for("login", user_role="recruiter"))
+
+    decision = request.form.get("decision", "").strip()
+    if decision not in {"shortlist", "reject"}:
+        return redirect(url_for("recruiter_dashboard"))
+
+    candidate_name = request.form.get("candidate_name", "").strip() or "Candidate"
+    predicted_role = request.form.get("predicted_role", "").strip() or "General Software"
+    job_description = request.form.get("job_description", "").strip()
+
+    matched_terms = [
+        item.strip()
+        for item in request.form.get("matched_job_terms", "").split(",")
+        if item.strip()
+    ]
+    highlights = [
+        item.strip()
+        for item in request.form.get("highlights", "").split(",")
+        if item.strip()
+    ]
+
+    db.save_recruiter_feedback(
+        user_id=user["id"],
+        candidate_name=candidate_name,
+        predicted_role=predicted_role,
+        decision=decision,
+        job_description=job_description,
+        evidence_payload={
+            "matched_job_terms": matched_terms,
+            "highlights": highlights,
+        },
+    )
+    return redirect(url_for("recruiter_dashboard"))
 
 
 if __name__ == "__main__":

@@ -2,6 +2,8 @@ import json
 import sqlite3
 from pathlib import Path
 
+from .preprocessing import normalize_text
+
 
 class TalentLensDB:
     def __init__(self, db_path: Path):
@@ -37,6 +39,18 @@ class TalentLensDB:
                     title TEXT NOT NULL,
                     input_text TEXT NOT NULL,
                     result_json TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY(user_id) REFERENCES users(id)
+                );
+
+                CREATE TABLE IF NOT EXISTS recruiter_feedback (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    candidate_name TEXT NOT NULL,
+                    predicted_role TEXT NOT NULL,
+                    decision TEXT NOT NULL CHECK(decision IN ('shortlist', 'reject')),
+                    job_description TEXT NOT NULL,
+                    evidence_json TEXT NOT NULL,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY(user_id) REFERENCES users(id)
                 );
@@ -117,3 +131,74 @@ class TalentLensDB:
                 }
             )
         return analyses
+
+    def save_recruiter_feedback(
+        self,
+        user_id: int,
+        candidate_name: str,
+        predicted_role: str,
+        decision: str,
+        job_description: str,
+        evidence_payload: dict,
+    ) -> int:
+        with self.connect() as connection:
+            cursor = connection.execute(
+                """
+                INSERT INTO recruiter_feedback (
+                    user_id, candidate_name, predicted_role, decision, job_description, evidence_json
+                )
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    user_id,
+                    candidate_name,
+                    predicted_role,
+                    decision,
+                    job_description,
+                    json.dumps(evidence_payload, ensure_ascii=True),
+                ),
+            )
+            return int(cursor.lastrowid)
+
+    def recruiter_feedback_profile(self, user_id: int, limit: int = 80) -> dict:
+        with self.connect() as connection:
+            rows = connection.execute(
+                """
+                SELECT predicted_role, decision, job_description, evidence_json
+                FROM recruiter_feedback
+                WHERE user_id = ?
+                ORDER BY id DESC
+                LIMIT ?
+                """,
+                (user_id, limit),
+            ).fetchall()
+
+        profile = {
+            "shortlisted_roles": {},
+            "rejected_roles": {},
+            "shortlisted_terms": {},
+            "rejected_terms": {},
+            "total_feedback": len(rows),
+        }
+
+        for row in rows:
+            role_bucket = (
+                profile["shortlisted_roles"]
+                if row["decision"] == "shortlist"
+                else profile["rejected_roles"]
+            )
+            role_bucket[row["predicted_role"]] = role_bucket.get(row["predicted_role"], 0) + 1
+
+            evidence = json.loads(row["evidence_json"])
+            terms = set(evidence.get("matched_job_terms", [])) | set(evidence.get("highlights", []))
+            target_bucket = (
+                profile["shortlisted_terms"]
+                if row["decision"] == "shortlist"
+                else profile["rejected_terms"]
+            )
+            for term in terms:
+                normalized_term = normalize_text(term)
+                if normalized_term:
+                    target_bucket[normalized_term] = target_bucket.get(normalized_term, 0) + 1
+
+        return profile

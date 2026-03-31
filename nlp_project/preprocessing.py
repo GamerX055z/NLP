@@ -33,11 +33,31 @@ STOP_WORDS = {
 }
 
 SECTION_PATTERNS = {
+    "summary": ("summary", "profile", "professional summary", "objective"),
     "skills": ("skills", "technical skills", "toolkit", "stack", "competencies"),
     "projects": ("projects", "project", "portfolio", "built", "developed"),
     "experience": ("experience", "employment", "internship", "worked", "work experience"),
     "education": ("education", "college", "university", "degree", "academic"),
     "certifications": ("certifications", "certification", "certified"),
+}
+
+TERM_VARIANTS = {
+    "javascript": ("js", "javascript", "ecmascript"),
+    "typescript": ("ts", "typescript"),
+    "react": ("react", "reactjs", "react.js"),
+    "next.js": ("next", "nextjs", "next.js"),
+    "node.js": ("node", "nodejs", "node.js"),
+    "ci/cd": ("ci/cd", "cicd", "continuous integration", "continuous delivery"),
+    "machine learning": ("machine learning", "ml"),
+    "natural language processing": ("natural language processing", "nlp"),
+    "ui/ux": ("ui/ux", "ui ux", "ux/ui", "user experience", "user interface"),
+    "quality assurance": ("quality assurance", "qa"),
+    "scikit learn": ("scikit learn", "scikit-learn", "sklearn"),
+    "power bi": ("power bi", "powerbi"),
+    "named entity recognition": ("named entity recognition", "ner"),
+    "application security": ("application security", "appsec"),
+    "amazon web services": ("amazon web services", "aws"),
+    "google cloud platform": ("google cloud platform", "gcp"),
 }
 
 
@@ -94,22 +114,74 @@ def top_keywords(text: str, limit: int = 10) -> list[str]:
 def extract_sections(text: str) -> dict[str, str]:
     sections = {section: "" for section in SECTION_PATTERNS}
     lines = [line.strip() for line in text.splitlines() if line.strip()]
+    hint_lookup = {
+        section: [normalize_text(hint) for hint in hints]
+        for section, hints in SECTION_PATTERNS.items()
+    }
+    active_section = None
 
     for line in lines:
         lowered = normalize_text(line)
+
+        matched_heading = None
+        for section, hints in hint_lookup.items():
+            if lowered in hints:
+                matched_heading = section
+                break
+
+        if matched_heading:
+            active_section = matched_heading
+            continue
+
         if ":" in line:
             raw_label, raw_value = line.split(":", 1)
             label = normalize_text(raw_label)
             value = raw_value.strip()
-            for section, hints in SECTION_PATTERNS.items():
-                if label in [normalize_text(hint) for hint in hints]:
+            for section, hints in hint_lookup.items():
+                if label in hints:
                     sections[section] = f"{sections[section]} {value}".strip()
+                    active_section = section
+                    break
+            else:
+                if active_section:
+                    sections[active_section] = f"{sections[active_section]} {line}".strip()
         else:
-            for section, hints in SECTION_PATTERNS.items():
+            for section, hints in hint_lookup.items():
                 if any(hint in lowered for hint in hints):
                     sections[section] = f"{sections[section]} {line}".strip()
+                    active_section = section
+                    break
+            else:
+                if active_section:
+                    sections[active_section] = f"{sections[active_section]} {line}".strip()
 
     return {key: value.strip() for key, value in sections.items() if value.strip()}
+
+
+def build_weighted_resume_text(text: str) -> str:
+    normalized = normalize_text(text)
+    sections = extract_sections(text)
+    section_weights = {
+        "skills": 4,
+        "projects": 3,
+        "experience": 3,
+        "education": 1,
+        "certifications": 1,
+    }
+
+    weighted_parts = [normalized]
+    for section, weight in section_weights.items():
+        section_text = sections.get(section)
+        if not section_text:
+            continue
+        normalized_section = normalize_text(section_text)
+        weighted_parts.extend([f"{section} {normalized_section}"] * weight)
+
+    keywords = top_keywords(text, limit=10)
+    phrases = extract_keyphrases(text, limit=6)
+    weighted_parts.extend(keywords)
+    weighted_parts.extend(phrases)
+    return " ".join(part for part in weighted_parts if part).strip()
 
 
 def resume_completeness(text: str) -> tuple[int, list[str], dict[str, str]]:
@@ -128,7 +200,7 @@ def resume_completeness(text: str) -> tuple[int, list[str], dict[str, str]]:
 
 def keyword_overlap(text: str, keywords: list[str]) -> tuple[list[str], list[str], float]:
     normalized = normalize_text(text)
-    matched = [keyword for keyword in keywords if normalize_text(keyword) in normalized]
+    matched = [keyword for keyword in keywords if any(variant in normalized for variant in keyword_variants(keyword))]
     missing = [keyword for keyword in keywords if keyword not in matched]
     coverage = (len(matched) / len(keywords) * 100) if keywords else 0.0
     return matched, missing, round(coverage, 2)
@@ -145,3 +217,25 @@ def extract_target_keywords(text: str, limit: int = 10) -> list[str]:
         if len(keywords) >= limit:
             break
     return keywords
+
+
+def keyword_variants(keyword: str) -> list[str]:
+    normalized_keyword = normalize_text(keyword)
+    variants = {normalized_keyword}
+
+    if normalized_keyword in TERM_VARIANTS:
+        variants.update(normalize_text(value) for value in TERM_VARIANTS[normalized_keyword])
+
+    if "+" in normalized_keyword:
+        variants.add(normalized_keyword.replace("+", " plus "))
+    if "/" in normalized_keyword:
+        variants.add(normalized_keyword.replace("/", " "))
+        variants.add(normalized_keyword.replace("/", " and "))
+    if "." in normalized_keyword:
+        variants.add(normalized_keyword.replace(".", ""))
+
+    compact = normalized_keyword.replace(" ", "")
+    if compact != normalized_keyword:
+        variants.add(compact)
+
+    return [variant.strip() for variant in variants if variant.strip()]

@@ -1,27 +1,107 @@
 [
   {
-    "role": "NLP Engineer",
-    "description": "Builds language-processing systems for text classification, information extraction, search, chatbots, summarization, and document intelligence using Python.",
-    "keywords": ["python", "nlp", "text classification", "transformers", "bert", "spacy", "tokenization", "named entity recognition", "summarization", "cosine similarity"]
+    "role": "Frontend Engineer",
+    "description": "Builds responsive web interfaces, design-system components, and browser-based product experiences.",
+    "keywords": ["javascript", "typescript", "react", "next.js", "html", "css", "responsive design", "ui", "frontend", "web performance"]
   },
   {
-    "role": "Machine Learning Engineer",
-    "description": "Designs end-to-end machine learning pipelines, feature engineering workflows, model training, evaluation, and deployment systems.",
-    "keywords": ["python", "machine learning", "scikit learn", "tensorflow", "pytorch", "feature engineering", "model deployment", "mlops", "classification", "prediction"]
+    "role": "Backend Engineer",
+    "description": "Designs APIs, services, server-side business logic, and data-driven application backends.",
+    "keywords": ["api", "backend", "node.js", "python", "java", "database", "microservices", "rest", "authentication", "server"]
+  },
+  {
+    "role": "Full Stack Developer",
+    "description": "Works across frontend and backend systems to build end-to-end web products and integrations.",
+    "keywords": ["full stack", "react", "api", "database", "frontend", "backend", "javascript", "python", "deployment", "web application"]
+  },
+  {
+    "role": "Mobile App Developer",
+    "description": "Creates cross-platform or native mobile applications with polished UX and mobile-specific features.",
+    "keywords": ["flutter", "react native", "android", "ios", "mobile", "swift", "kotlin", "app development", "firebase", "ui design"]
+  },
+  {
+    "role": "DevOps Engineer",
+    "description": "Automates infrastructure, CI/CD pipelines, environment management, and deployment reliability.",
+    "keywords": ["devops", "ci/cd", "docker", "kubernetes", "jenkins", "terraform", "ansible", "automation", "deployment", "infrastructure"]
+  },
+  {
+    "role": "Cloud Engineer",
+    "description": "Builds, manages, and optimizes systems on public cloud platforms and scalable cloud-native services.",
+    "keywords": ["aws", "azure", "gcp", "cloud", "serverless", "ec2", "lambda", "networking", "storage", "cloud architecture"]
+  },
+  {
+    "role": "Site Reliability Engineer",
+    "description": "Improves availability, observability, incident response, and reliability of production systems.",
+    "keywords": ["sre", "monitoring", "observability", "incident response", "uptime", "prometheus", "grafana", "alerting", "reliability", "production"]
+  },
+  {
+    "role": "Data Engineer",
+    "description": "Builds ETL pipelines, data warehouses, streaming workflows, and reliable analytics data infrastructure.",
+    "keywords": ["data engineering", "etl", "airflow", "spark", "sql", "data pipeline", "warehouse", "bigquery", "hadoop", "streaming"]
   },
   {
     "role": "Data Scientist",
-    "description": "Uses statistical modeling, experimentation, predictive analytics, and storytelling to convert data into product or business decisions.",
-    "keywords": ["python", "statistics", "sql", "data analysis", "visualization", "pandas", "regression", "classification", "experimentation", "insights"]
+    "description": "Uses statistics, experimentation, and predictive modeling to drive product and business insights.",
+    "keywords": ["python", "statistics", "pandas", "regression", "classification", "experimentation", "visualization", "modeling", "insights", "analytics"]
   },
   {
     "role": "Data Analyst",
-    "description": "Analyzes structured data, prepares dashboards and reports, cleans data, and communicates actionable trends to stakeholders.",
-    "keywords": ["sql", "excel", "power bi", "tableau", "reporting", "data cleaning", "analytics", "dashboard", "kpi", "business analysis"]
+    "description": "Creates reports, dashboards, and business analyses from structured data for decision-making.",
+    "keywords": ["sql", "excel", "power bi", "tableau", "dashboard", "reporting", "analytics", "kpi", "data cleaning", "business intelligence"]
   },
   {
-    "role": "Python Backend Developer",
-    "description": "Builds APIs, backend services, integrations, and scalable application logic with Python frameworks and databases.",
-    "keywords": ["python", "flask", "django", "api", "backend", "database", "rest", "deployment", "microservices", "authentication"]
+    "role": "Machine Learning Engineer",
+    "description": "Builds, trains, evaluates, and deploys machine learning systems and predictive services.",
+    "keywords": ["machine learning", "scikit learn", "tensorflow", "pytorch", "feature engineering", "model deployment", "classification", "prediction", "python", "ml"]
+  },
+  {
+    "role": "NLP Engineer",
+    "description": "Builds language-processing systems for classification, search, extraction, summarization, and conversational AI.",
+    "keywords": ["nlp", "transformers", "bert", "spacy", "text classification", "named entity recognition", "summarization", "chatbot", "tokenization", "python"]
+  },
+  {
+    "role": "MLOps Engineer",
+    "description": "Operationalizes ML models with experiment tracking, deployment, versioning, and monitoring pipelines.",
+    "keywords": ["mlops", "model registry", "feature store", "deployment", "monitoring", "docker", "kubernetes", "airflow", "automation", "experiments"]
+  },
+  {
+    "role": "QA Engineer",
+    "description": "Validates software quality through test planning, manual verification, defect reporting, and release readiness.",
+    "keywords": ["qa", "testing", "test cases", "bug tracking", "quality assurance", "manual testing", "regression testing", "defect management", "release testing", "validation"]
+  },
+  {
+    "role": "Automation Test Engineer",
+    "description": "Builds automated test suites, integration checks, and quality pipelines for faster reliable releases.",
+    "keywords": ["selenium", "cypress", "playwright", "automation testing", "test automation", "pytest", "api testing", "ui testing", "qa automation", "framework"]
+  },
+  {
+    "role": "Security Engineer",
+    "description": "Secures applications and infrastructure through threat modeling, vulnerability remediation, and secure design.",
+    "keywords": ["security", "application security", "vulnerability assessment", "owasp", "penetration testing", "iam", "encryption", "threat modeling", "secure coding", "siem"]
+  },
+  {
+    "role": "Product Manager",
+    "description": "Shapes product direction through requirements, prioritization, roadmap planning, and stakeholder coordination.",
+    "keywords": ["product management", "roadmap", "requirements", "stakeholders", "user stories", "agile", "prioritization", "product strategy", "metrics", "launch"]
+  },
+  {
+    "role": "UI/UX Designer",
+    "description": "Designs intuitive product experiences through research, wireframing, prototyping, and interaction design.",
+    "keywords": ["ui/ux", "figma", "wireframes", "prototyping", "user research", "design system", "usability", "interaction design", "visual design", "user flows"]
+  },
+  {
+    "role": "Solutions Architect",
+    "description": "Designs high-level technical solutions, platform integrations, and scalable system choices for business needs.",
+    "keywords": ["solutions architect", "architecture", "system design", "integration", "cloud architecture", "scalability", "enterprise systems", "technical strategy", "apis", "design patterns"]
+  },
+  {
+    "role": "Software Architect",
+    "description": "Defines application architecture, patterns, component boundaries, and long-term engineering structure.",
+    "keywords": ["software architecture", "design patterns", "system design", "microservices", "distributed systems", "architecture review", "scalability", "technical leadership", "domain design", "performance"]
+  },
+  {
+    "role": "Technical Support Engineer",
+    "description": "Resolves product issues, diagnoses incidents, supports customers, and translates technical problems into solutions.",
+    "keywords": ["technical support", "troubleshooting", "incident resolution", "customer support", "logs", "ticketing", "root cause analysis", "sla", "product support", "debugging"]
   }
 ]

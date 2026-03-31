@@ -31,6 +31,9 @@
     --tip-border: #f0dfac;
     --tip-text: #6a5720;
     --recruiter-result-bg: linear-gradient(180deg, #fcfffd, #f6fbf8);
+    --canvas-line: rgba(11, 102, 195, 0.08);
+    --canvas-orb-a: rgba(11, 102, 195, 0.14);
+    --canvas-orb-b: rgba(33, 170, 122, 0.1);
 }
 
 :root[data-theme="dark"] {
@@ -65,6 +68,9 @@
     --tip-border: #665229;
     --tip-text: #f1db96;
     --recruiter-result-bg: linear-gradient(180deg, #16251d, #112019);
+    --canvas-line: rgba(77, 163, 255, 0.11);
+    --canvas-orb-a: rgba(77, 163, 255, 0.16);
+    --canvas-orb-b: rgba(60, 189, 140, 0.12);
 }
 
 * {
@@ -345,6 +351,124 @@ button:hover,
 .flow-section {
     gap: 18px;
     margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+    padding: 26px;
+    border-radius: 30px;
+    background:
+        radial-gradient(circle at 0% 0%, var(--canvas-orb-a), transparent 28%),
+        radial-gradient(circle at 100% 100%, var(--canvas-orb-b), transparent 24%),
+        linear-gradient(180deg, color-mix(in srgb, var(--surface) 72%, var(--bg-alt)), color-mix(in srgb, var(--surface) 90%, var(--bg)));
+    border: 1px solid color-mix(in srgb, var(--soft-border) 75%, var(--canvas-line));
+    box-shadow: var(--shadow);
+}
+
+.flow-section::before,
+.flow-section::after,
+.module-strip::before,
+.experience-board::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+}
+
+.flow-section::before {
+    inset: 0;
+    background-image:
+        linear-gradient(to right, transparent 0, transparent calc(100% - 1px), var(--canvas-line) calc(100% - 1px)),
+        linear-gradient(to bottom, transparent 0, transparent calc(100% - 1px), var(--canvas-line) calc(100% - 1px));
+    background-size: 34px 34px;
+    opacity: 0.7;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 85%);
+}
+
+.flow-section::after {
+    width: 320px;
+    height: 320px;
+    right: -120px;
+    top: -120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--canvas-orb-a), transparent 68%);
+}
+
+.insight-ribbon,
+.experience-board,
+.command-deck,
+.decision-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.insight-ribbon {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 24px;
+}
+
+.ribbon-card,
+.experience-card,
+.command-card,
+.decision-card,
+.roadmap-card,
+.focus-panel {
+    background: var(--surface);
+    border: 1px solid var(--soft-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.ribbon-card {
+    padding: 22px;
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 84%, var(--primary-soft)), var(--surface));
+}
+
+.ribbon-card span,
+.experience-card span,
+.command-card span,
+.roadmap-card span {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ribbon-card strong,
+.command-card strong,
+.roadmap-card strong {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.hero-marquee {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.hero-marquee span {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface-soft) 84%, var(--surface));
+    border: 1px solid var(--soft-border);
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.dashboard-marquee {
+    margin-top: 22px;
+}
+
+.preview-spotlight {
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 78%, var(--primary-soft)), var(--surface-soft));
 }
 
 .flow-intro {
@@ -414,6 +538,85 @@ button:hover,
 
 .module-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    position: relative;
+    overflow: hidden;
+    padding: 28px;
+    border-radius: 30px;
+    background:
+        radial-gradient(circle at 100% 0%, var(--canvas-orb-a), transparent 24%),
+        linear-gradient(180deg, color-mix(in srgb, var(--surface) 82%, var(--bg-alt)), color-mix(in srgb, var(--surface) 96%, var(--bg)));
+    border: 1px solid color-mix(in srgb, var(--soft-border) 78%, var(--canvas-line));
+    box-shadow: var(--shadow);
+}
+
+.module-strip::before {
+    inset: 0;
+    background:
+        linear-gradient(135deg, transparent 0 46%, var(--canvas-line) 46% 47%, transparent 47% 100%);
+    opacity: 0.45;
+}
+
+.experience-board {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: start;
+    margin-top: 28px;
+    position: relative;
+    overflow: hidden;
+    padding: 30px;
+    border-radius: 30px;
+    background:
+        radial-gradient(circle at 15% 20%, var(--canvas-orb-b), transparent 20%),
+        linear-gradient(180deg, color-mix(in srgb, var(--surface) 88%, var(--bg-alt)), color-mix(in srgb, var(--surface) 98%, var(--bg)));
+    border: 1px solid color-mix(in srgb, var(--soft-border) 78%, var(--canvas-line));
+    box-shadow: var(--shadow);
+}
+
+.experience-board::before {
+    inset: 0;
+    background-image:
+        linear-gradient(to right, transparent 0, transparent calc(100% - 1px), var(--canvas-line) calc(100% - 1px)),
+        linear-gradient(to bottom, transparent 0, transparent calc(100% - 1px), var(--canvas-line) calc(100% - 1px));
+    background-size: 46px 46px;
+    opacity: 0.35;
+}
+
+.experience-copy {
+    padding: 18px 4px;
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.experience-card {
+    padding: 24px;
+    min-height: 220px;
+}
+
+.experience-card span {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    background: color-mix(in srgb, var(--primary) 16%, var(--surface));
+    color: var(--primary-dark);
+}
+
+.accent-blue {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 80%, #dbeeff), var(--surface));
+}
+
+.accent-green {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 80%, #dff6ea), var(--surface));
+}
+
+.accent-gold {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 80%, #f8ecd1), var(--surface));
 }
 
 .module-tile {
@@ -570,7 +773,8 @@ textarea:focus {
 .ranking-board,
 .tip-stack,
 .candidate-list,
-.notice-stack {
+.notice-stack,
+.family-grid {
     display: grid;
     gap: 14px;
 }
@@ -616,6 +820,17 @@ textarea:focus {
     gap: 10px;
 }
 
+.feedback-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.feedback-actions form {
+    margin: 0;
+}
+
 .role-chip {
     background: var(--primary-soft);
 }
@@ -643,6 +858,93 @@ textarea:focus {
     font-weight: 600;
 }
 
+.family-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.family-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface-soft) 84%, var(--primary-soft));
+    border: 1px solid var(--soft-border);
+}
+
+.family-card-head,
+.family-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.family-icon,
+.family-dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 10px;
+    border-radius: 14px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    background: color-mix(in srgb, var(--primary) 16%, var(--surface));
+    color: var(--primary-dark);
+}
+
+.family-dot {
+    min-width: 34px;
+    height: 34px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    padding: 0 8px;
+}
+
+.family-card strong {
+    font-size: 1rem;
+}
+
+.family-card span {
+    color: var(--primary-dark);
+    font-weight: 800;
+}
+
+.family-engineering {
+    background: color-mix(in srgb, var(--surface-soft) 78%, #d8ebff);
+}
+
+.family-data-ai {
+    background: color-mix(in srgb, var(--surface-soft) 78%, #e3dcff);
+}
+
+.family-cloud {
+    background: color-mix(in srgb, var(--surface-soft) 78%, #d8f6ff);
+}
+
+.family-quality {
+    background: color-mix(in srgb, var(--surface-soft) 78%, #dff6ea);
+}
+
+.family-product {
+    background: color-mix(in srgb, var(--surface-soft) 78%, #ffe4d8);
+}
+
+.family-architecture {
+    background: color-mix(in srgb, var(--surface-soft) 78%, #f6ebd8);
+}
+
+.family-support {
+    background: color-mix(in srgb, var(--surface-soft) 78%, #eceff3);
+}
+
+.family-general {
+    background: color-mix(in srgb, var(--surface-soft) 82%, var(--primary-soft));
+}
+
 .ranking-board {
     grid-template-columns: 1fr;
 }
@@ -650,6 +952,28 @@ textarea:focus {
 .tip-stack {
     grid-template-columns: 1fr;
     margin-top: 16px;
+}
+
+.roadmap-stack {
+    display: grid;
+    gap: 14px;
+}
+
+.roadmap-card {
+    padding: 20px;
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 84%, var(--primary-soft)), var(--surface));
+}
+
+.focus-panel {
+    padding: 18px;
+    margin-top: 16px;
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 86%, #f0f7ff), var(--surface));
+}
+
+.focus-panel h4 {
+    margin: 0 0 14px;
 }
 
 .tip-card {
@@ -709,6 +1033,30 @@ textarea:focus {
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--primary) 24%, var(--soft-border));
     box-shadow: 0 10px 24px rgba(13, 38, 59, 0.08);
+}
+
+.command-deck {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-card {
+    padding: 22px;
+    background:
+        linear-gradient(180deg, color-mix(in srgb, var(--surface-soft) 82%, var(--success-soft)), var(--surface));
+}
+
+.decision-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.decision-card {
+    padding: 22px;
+    background: var(--surface-soft);
+}
+
+.decision-card strong {
+    display: block;
+    margin-bottom: 8px;
 }
 
 .input-mode-switch {
@@ -888,8 +1236,16 @@ pre {
     .flow-grid,
     .two-up,
     .metric-grid,
-    .showcase-band {
+    .showcase-band,
+    .insight-ribbon,
+    .experience-grid,
+    .command-deck,
+    .decision-grid {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .experience-board {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -914,7 +1270,11 @@ pre {
     .flow-grid,
     .two-up,
     .metric-grid,
-    .showcase-band {
+    .showcase-band,
+    .insight-ribbon,
+    .experience-grid,
+    .command-deck,
+    .decision-grid {
         grid-template-columns: 1fr;
     }
 
